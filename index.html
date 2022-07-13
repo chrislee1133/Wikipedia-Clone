@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Wikipedia Clone</title>
+
+    <link rel="stylesheet" href="cloneStylesheet/stylesheet.css">
+
+  </head>
+  <body>
+
+    <main>
+
+
+<!--
+      //function for event listener
+       async function handleSubmit(event) {
+         //prevent page from reloading when form is submitted
+         event.preventDefault();
+         //gets the value of the input <fieldset>
+           const inputValue = document.querySelector('.js-search-input').value;
+           //removes the whitespace from the input
+           const searchQuery = inputValue.trim();
+           //print searchQuery to the console
+           //console.log(searchQuery);
+
+           try{
+             const results = await searchWikipedia(searchQuery);
+             // console.log(results);
+             displayResults(results);
+           }
+           catch (err) {
+             console.log(err);
+             alert('Failed to search wikipedia'); //if keyword is entered in the search input , query will be sent to wikipedia API, object returned will be logged to the console
+           }
+       }
+
+       //An AJAX request is a request made by an AJAX application. Typically, it is an HTTP request made by (browser-resident) Javascript that uses XML to encode the request data and/or response data
+       //format=json specifies json response
+       //origin=* gets around CORS restrictions
+       //srlimit=20 specifies how many results should be returned per page
+       //srsearch= contains search query
+
+
+
+       async function searchWikipedia(searchQuery) {
+
+         //searchQuery gets interpolated into the API endpoint string as &srsearch query
+         const endpoint = `https://en.wikipedia.org/w/api.php?action=query&list=search&prop=info&inprop=url&utf8=&format=json&origin=*&srlimit=20&srsearch=${searchQuery}`;
+
+         //endpoint variable gets passed as parameter to fetch
+         const response = await fetch(endpoint);
+
+
+         if(!response.ok) {
+           throw Error(response.statusText);
+         }
+
+         //waits for the promise to resolve, await can only be used in an async function (always returns a promise)
+         const json = await response.json();  //if fetch resolves to 200 ok, used to parse the response as json, error thrown otherwise
+         return json;
+       }
+
+       //Displays the results
+       function displayResults(results) {
+         //gets a reference to the '.js-search-results' element
+         const searchResults = document.querySelector('.js-search-results');
+
+
+         //iterate over the search array, each nested object in the array can be accessed through the result parameter
+         results.query.search.forEach(result => {
+           const url = `https://en.wikipedia.org/?curid=${result.pageid}`;
+
+           //append the search result to the DOM
+           searchResults.insertAdjacentHTML(
+           'beforeend',
+           `<div class="result-item">
+             <h3 class="result-title">
+               <a href="${url}" target="_blank" rel="noopener">${result.title}</a>
+             </h3>
+             <a href="${url}" class="result-link" target="_blank" rel="noopener">${url}</a>
+             <span class="result-snippet">${result.snippet}</span><br>
+           </div>`
+         );
+       });
+     }
+
+     //captures/accesses the search query on form submission
+       //listens for the submit even on .js-search-form and captures user input
+     const form = document.querySelector('.js-search-form'); //grabs a reference to an element in the DOM using querySelector, returns the first element that matches the specified selector given
+     form.addEventListener('submit', handleSubmit); //submit it DOM event to listen for, handleSubmit is the function ran on event trigger
+-->
+
+
+  <header class="header">
+    <img class="logo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/80/Wikipedia-logo-v2.svg/657px-Wikipedia-logo-v2.svg.png" alt="Wikipedia Logo" />
+
+    <form class="search-form js-search-form">
+      <input placeholder="Type a keyword and press Enter to search" type="search" class="search-input js-search-input" autofocus />
+    </form>
+  </header>
+
+  <div class="loading-indicator">
+    <div class="sk-chase js-spinner hidden">
+      <div class="sk-chase-dot"></div>
+      <div class="sk-chase-dot"></div>
+      <div class="sk-chase-dot"></div>
+      <div class="sk-chase-dot"></div>
+      <div class="sk-chase-dot"></div>
+      <div class="sk-chase-dot"></div>
+    </div>
+  </div>
+
+  <section class="search-results js-search-results"></section>
+</main>
+
+  <script src="main.js"></script> <!-- loads javascript after all other html formatting has been done? , also uses external javascript as internal for some reason will not work
+  </body>
+</html>
